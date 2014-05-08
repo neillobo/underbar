@@ -167,7 +167,7 @@ var results=[];
   //     return total + number;
   //   }, 0); // should be 6
   _.reduce = function(collection, iterator, accumulator) {
-    accumulator ===undefined||false? collection[0] : accumulator;
+    accumulator ===undefined? collection[0] : accumulator;
 
     _.each(collection,function(item){
       accumulator = iterator(accumulator,item);
@@ -180,7 +180,9 @@ var results=[];
     // TIP: Many iteration problems can be most easily expressed in
     // terms of reduce(). Here's a freebie to demonstrate!
     return _.reduce(collection, function(wasFound, item) {
-      if (wasFound) return true;
+      if (wasFound) {
+        return true;
+      }
       return item === target;
     }, false);
   };
@@ -189,6 +191,14 @@ var results=[];
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    if (collection.length===0) return true;
+    return _.reduce(collection,function(isPresent,item){
+      if(!isPresent) {
+        return false;
+      }
+      return iterator(item);
+
+    }, false);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
