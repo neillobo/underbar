@@ -234,14 +234,14 @@ var results=[];
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
-    for (var i=0; i<arguments.length;i++){
-        for (var key in arguments[i]){
-          if(typeof(arguments[i])==='object'){
-            if(arguments[i].hasOwnProperty(key)) 
-                obj[key]=arguments[i][key];
+    _.each(arguments,function(item){
+        for (var key in item){
+          if(typeof(item)==='object'){
+            if(item.hasOwnProperty(key)) 
+                obj[key]=item[key];
           }
         }
-    }
+    });
     return obj;
   };
 
