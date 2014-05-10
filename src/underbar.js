@@ -252,8 +252,10 @@ var results=[];
         if(typeof(arguments[i])==='object'){
           for (var key in arguments[i]){
             if(arguments[i].hasOwnProperty(key)) {
-              //if(typeof(obj[key])==='string' && obj[key].length>0)
+              if(!(typeof obj[key]==='string' && obj[key].length===0)){
+                if(!isNaN(obj[key])||obj[key]===undefined)
                obj[key]=obj[key]||arguments[i][key];
+             }
             } 
           }
         }
