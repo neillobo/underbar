@@ -301,6 +301,11 @@ var results=[];
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var results;
+    var answers={};
+    if(answers[arguments[0]]!==undefined){
+
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls
