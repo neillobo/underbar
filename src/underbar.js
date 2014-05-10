@@ -148,7 +148,7 @@ var results=[];
        
       _.each(collection,function(item){
         if(typeof(functionOrKey)==='function') results.push(functionOrKey.apply(item));
-        else results.push(item.eval(functionOrKey));
+        else results.push(item.functionOrKey());
       });
      return results;
   };
@@ -233,28 +233,33 @@ var results=[];
   //   }, {
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
-  _.extend = function(obj,overWrite) {
-    overWrite===undefined? true: overWrite;
+  _.extend = function(obj) {
     _.each(arguments,function(item){
-     if(typeof item==='object'){
         for (var key in item){
-             if(item.hasOwnProperty(key)){
-                if(overWrite) obj[key]=item[key]; 
-                else obj[key] = obj[key] || item[key];
-             }
-         }
-     }
- });
- return obj;
+          if(typeof(item)==='object'){
+            if(item.hasOwnProperty(key)) 
+                obj[key]=item[key];
+          }
+        }
+    });
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
-  return(_.extend(obj,false,arguments));
-
+      for (var i=1; i<arguments.length;i++){
+        if(typeof(arguments[i])==='object'){
+          for (var key in arguments[i]){
+            if(arguments[i].hasOwnProperty(key)) {
+              //if(typeof(obj[key])==='string' && obj[key].length>0)
+               obj[key]=obj[key]||arguments[i][key];
+            } 
+          }
+        }
+    }
+    return obj;
   };
-
 
   /**
    * FUNCTIONS
