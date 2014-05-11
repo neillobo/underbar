@@ -143,16 +143,12 @@ var results=[];
 
   // Calls the method named by methodName on each value in the list.
   // Note: you will nead to learn a bit about .apply to complete this.
-  _.invoke = function(collection, functionOrKey, args) {
-      var results=[];
-       
-      _.each(collection,function(item){
-        if(typeof(functionOrKey)==='function') results.push(functionOrKey.apply(item));
-        else results.push(item.functionOrKey());
-      });
-     return results;
+    _.invoke = function(collection, functionOrKey, args) {
+    return _.map(collection, function(item) {
+       return (typeof functionOrKey ==='function' ?  functionOrKey.apply(item,args) :  item[functionOrKey].apply(item));
+    });
   };
-
+  
   // Reduces an array or object to a single value by repetitively calling
   // iterator(previousValue, item) for each item. previousValue should be
   // the return value of the previous iterator call.
@@ -283,6 +279,7 @@ var results=[];
     // TIP: We'll return a new function that delegates to the old one, but only
     // if it hasn't been called before.
     return function() {
+      
       if (!alreadyCalled) {
         // TIP: .apply(this, arguments) is the standard way to pass on all of the
         // infromation from one function call to another.
@@ -302,10 +299,8 @@ var results=[];
   // instead if possible.
   _.memoize = function(func) {
     var results;
-    var answers={};
-    if(answers[arguments[0]]!==undefined){
-
-    }
+    //results = func.apply(this,arguments);
+    //return results;
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -314,9 +309,12 @@ var results=[];
   // The arguments for the original function are passed after the wait
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
-  _.delay = function(func, wait) {
-  };
-
+  _.delay = function (func, wait, args){
+    var sliced = Array.prototype.slice.call(arguments,2);
+    return setTimeout(function(){
+       func.apply(this,sliced);
+    },wait);
+  }
 
   /**
    * ADVANCED COLLECTION OPERATIONS
@@ -329,6 +327,16 @@ var results=[];
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var temp=array.slice();
+    var len=array.length,store,i;
+
+    while(len){
+      i=Math.floor(Math.random()*len--);//pick an element randomly from the front
+      store=temp[len]; //swap with the back element, get that to the front
+      temp[len]=temp[i];
+      temp[i]=store;
+    }
+    return temp;
   };
 
 
