@@ -298,9 +298,16 @@ var results=[];
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-    var results;
-    //results = func.apply(this,arguments);
-    //return results;
+    var cache={};
+    
+    return function(n){
+      if (n in cache){
+        return cache[n];
+      }
+      else {
+        return cache[n]=func.call(this,n);
+      }
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -365,7 +372,18 @@ var results=[];
   // The new array should contain all elements of the multidimensional array.
   //
   // Hint: Use Array.isArray to check if something is an array
-  _.flatten = function(nestedArray, result) {
+  _.flatten = function(nestedArray, results) {
+    var results = results || [];
+    _.each(nestedArray,function(item){
+        if (Array.isArray(item)){
+            _.flatten(item,results);
+        }
+        else{
+            results.push(item);
+        }
+        
+    });
+    return results;
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
